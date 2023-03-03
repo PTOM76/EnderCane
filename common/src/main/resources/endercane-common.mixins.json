@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ml.pkom.examplemod.mixin.fabric",
+  "package": "ml.pkom.endercane.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],

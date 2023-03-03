@@ -13,16 +13,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ml.pkom.examplemod.fabric.ExampleModFabric"
+      "ml.pkom.endercane.fabric.EnderCaneFabric"
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "endercane.mixins.json",
+    "endercane-common.mixins.json"
   ],
   "depends": {
     "fabricloader": "*",
-    "minecraft": ">=1.18",
+    "minecraft": ">=1.16",
     "mcpitanlibarch": ">=${mcpitanlibarch_version}"
   }
 }
