@@ -7,7 +7,11 @@
   "authors": [
     "Pitan"
   ],
-  "contact": {},
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/pipeplus",
+    "sources": "https://github.com/PTOM76/EnderCane",
+    "issues": "https://github.com/PTOM76/EnderCane/issues"
+  },
   "license": "MIT",
   "icon": "icon.png",
   "environment": "*",
@@ -23,6 +27,6 @@
   "depends": {
     "fabricloader": "*",
     "minecraft": ">=1.16",
-    "mcpitanlibarch": ">1.4.4"
+    "mcpitanlibarch": ">1.4.6"
   }
 }

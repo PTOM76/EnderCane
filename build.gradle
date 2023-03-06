@@ -37,7 +37,6 @@ subprojects {
         modApi "ml.pkom:mcpitanlibarch-common+${rootProject.mcpitanlibarch_mcversion}:${rootProject.mcpitanlibarch_version}"
     }
 
-    /*
     if (name in "fabric,forge".split(",")) {
         var modLoader = name
 
@@ -45,7 +44,7 @@ subprojects {
             curseforge {
                 apiKey = System.getenv("CURSEFORGE_TOKEN")
                 project {
-                    id = ''
+                    id = '834713'
                     changelog = rootProject.changelog
                     if (modLoader == "fabric") {
                         releaseType = 'release'
@@ -83,7 +82,7 @@ subprojects {
         if (System.getenv("MODRINTH_TOKEN") != null) {
             modrinth {
                 token = System.getenv("MODRINTH_TOKEN")
-                projectId = ''
+                projectId = 'liIQE7kB'
                 versionNumber = project.mod_version + "-" + modLoader
                 gameVersions = ['1.17', '1.17.1', '1.18', '1.18.1', '1.18.2', '1.19', '1.19.1', '1.19.2', '1.19.3']
                 versionType = 'release'
@@ -99,8 +98,6 @@ subprojects {
             }
         }
     }
-     */
-
 }
 
 allprojects {

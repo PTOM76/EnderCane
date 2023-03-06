@@ -15,7 +15,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 
 public class EnderCane extends ExtendItem {
-    private int maxPearlAmount;
+    private final int maxPearlAmount;
 
     public EnderCane(Settings settings, int maxPearlAmount) {
         super(settings);

@@ -32,7 +32,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
     }
 
     public EnderCaneScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack stack) {
-        super(EnderCaneMod.ENDER_CANE_TYPE, syncId);
+        super(EnderCaneMod.ENDER_CANE_TYPE.get(), syncId);
         handStack = stack;
         pos = playerInventory.player.getBlockPos();
 
