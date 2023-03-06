@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "endercane:item/ender_cane"
+    "layer0": "endercane:item/advanced_ender_cane"
   }
 }
