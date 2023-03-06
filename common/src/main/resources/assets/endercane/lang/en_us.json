@@ -1,0 +1,9 @@
+{
+  "item.endercane.ender_cane": "Pure Ender Cane",
+  "item.endercane.medium_ender_cane": "Medium Ender Cane",
+  "item.endercane.advanced_ender_cane": "Advanced Ender Cane",
+  "gui.endercane.ender_cane_container": "Ender Cane",
+  "button.endercane.add_point": "+",
+  "button.endercane.remove_point": "-",
+  "button.endercane.set_point": "<"
+}

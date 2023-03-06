@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "B/R",
+    "BBL"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "/": {
+      "item": "endercane:medium_ender_cane"
+    }
+  },
+  "result": {
+    "item": "endercane:advanced_ender_cane",
+    "count": 1
+  }
+}
