@@ -34,7 +34,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
     public EnderCaneScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack stack) {
         super(EnderCaneMod.ENDER_CANE_TYPE.get(), syncId);
         handStack = stack;
-        pos = playerInventory.player.getBlockPos();
+        pos = new Player(playerInventory.player).getBlockPos();
 
         addPlayerHotbarSlots(playerInventory, 8, 142);
         addPlayerMainInventorySlots(playerInventory, 8, 84);

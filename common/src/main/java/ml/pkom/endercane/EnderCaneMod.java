@@ -1,5 +1,6 @@
 package ml.pkom.endercane;
 
+import ml.pkom.mcpitanlibarch.api.event.registry.RegistryEvent;
 import ml.pkom.mcpitanlibarch.api.gui.ExtendedScreenHandlerTypeBuilder;
 import ml.pkom.mcpitanlibarch.api.item.DefaultItemGroups;
 import ml.pkom.mcpitanlibarch.api.item.ExtendSettings;
@@ -10,25 +11,23 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.function.Supplier;
-
 public class EnderCaneMod {
     public static final String MOD_ID = "endercane";
 
     public static ArchRegistry registry = new ArchRegistry(MOD_ID);
 
-    public static Supplier<Item> PURE_ENDER_CANE = () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64);
-    public static Supplier<Item> MEDIUM_ENDER_CANE = () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256);
-    public static Supplier<Item> ADVANCED_ENDER_CANE = () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024);
+    public static RegistryEvent<Item> PURE_ENDER_CANE;
+    public static RegistryEvent<Item> MEDIUM_ENDER_CANE;
+    public static RegistryEvent<Item> ADVANCED_ENDER_CANE;
 
-    public static Supplier<ScreenHandlerType<?>> ENDER_CANE_TYPE = () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build();
+    public static RegistryEvent<ScreenHandlerType<?>> ENDER_CANE_TYPE;
 
     public static void init() {
-        registry.registerItem(id("ender_cane"), PURE_ENDER_CANE);
-        registry.registerItem(id("medium_ender_cane"), MEDIUM_ENDER_CANE);
-        registry.registerItem(id("advanced_ender_cane"), ADVANCED_ENDER_CANE);
+        PURE_ENDER_CANE = registry.registerItem(id("ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
+        MEDIUM_ENDER_CANE = registry.registerItem(id("medium_ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256));
+        ADVANCED_ENDER_CANE = registry.registerItem(id("advanced_ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024));
 
-        registry.registerScreenHandlerType(id("ender_cane_gui"), ENDER_CANE_TYPE);
+        ENDER_CANE_TYPE = registry.registerScreenHandlerType(id("ender_cane_gui"), () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build());
 
         ServerNetworking.registerReceiver(id("add_point"), ((server, player, buf) -> {
             BlockPos pos = buf.readBlockPos();

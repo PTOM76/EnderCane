@@ -5,6 +5,6 @@ import ml.pkom.mcpitanlibarch.api.client.registry.ArchRegistryClient;
 
 public class EnderCaneClientMod {
     public static void init() {
-        ArchRegistryClient.registerScreen(EnderCaneMod.ENDER_CANE_TYPE.get(), EnderCaneScreen::new);
+        ArchRegistryClient.registerScreen(EnderCaneMod.ENDER_CANE_TYPE.getOrNull(), EnderCaneScreen::new);
     }
 }
