@@ -35,12 +35,15 @@ public class EnderCane extends ExtendItem {
             } else if (stack.hasNbt() && stack.getNbt().contains("SelectPoint")) {
                 NbtCompound nbt = stack.getNbt();
                 int pearlCount = nbt.getInt("ender_pearl");
-                if (pearlCount > 0) {
+                if (pearlCount > 0 || getMaxPearlAmount() == -1) {
                     NbtCompound point = nbt.getCompound("SelectPoint");
                     if (point.contains("x") && point.contains("y") && point.contains("z")) {
                         player.getEntity().teleport(point.getInt("x"), point.getInt("y"), point.getInt("z"));
-                        pearlCount--;
-                        nbt.putInt("ender_pearl", pearlCount);
+
+                        if (getMaxPearlAmount() != -1) {
+                            pearlCount--;
+                            nbt.putInt("ender_pearl", pearlCount);
+                        }
                     }
                 }
             }
@@ -61,12 +64,15 @@ public class EnderCane extends ExtendItem {
             } else if (stack.hasNbt() && stack.getNbt().contains("SelectPoint")) {
                 NbtCompound nbt = stack.getNbt();
                 int pearlCount = nbt.getInt("ender_pearl");
-                if (pearlCount > 0) {
+                if (pearlCount > 0 || getMaxPearlAmount() == -1) {
                     NbtCompound point = nbt.getCompound("SelectPoint");
                     if (point.contains("x") && point.contains("y") && point.contains("z")) {
                         player.getEntity().teleport(point.getInt("x"), point.getInt("y"), point.getInt("z"));
-                        pearlCount--;
-                        nbt.putInt("ender_pearl", pearlCount);
+
+                        if (getMaxPearlAmount() != -1) {
+                            pearlCount--;
+                            nbt.putInt("ender_pearl", pearlCount);
+                        }
                     }
                 }
             }
@@ -96,7 +102,7 @@ public class EnderCane extends ExtendItem {
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
-        return true;
+        return getMaxPearlAmount() != -1;
     }
 
     public int getMaxPearlAmount() {

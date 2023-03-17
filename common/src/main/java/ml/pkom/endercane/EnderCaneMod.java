@@ -19,6 +19,7 @@ public class EnderCaneMod {
     public static RegistryEvent<Item> PURE_ENDER_CANE;
     public static RegistryEvent<Item> MEDIUM_ENDER_CANE;
     public static RegistryEvent<Item> ADVANCED_ENDER_CANE;
+    public static RegistryEvent<Item> INFINITY_ENDER_CANE;
 
     public static RegistryEvent<ScreenHandlerType<?>> ENDER_CANE_TYPE;
 
@@ -26,6 +27,7 @@ public class EnderCaneMod {
         PURE_ENDER_CANE = registry.registerItem(id("ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
         MEDIUM_ENDER_CANE = registry.registerItem(id("medium_ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256));
         ADVANCED_ENDER_CANE = registry.registerItem(id("advanced_ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024));
+        INFINITY_ENDER_CANE = registry.registerItem(id("infinity_ender_cane"), () -> new EnderCane(new ExtendSettings().addGroup(DefaultItemGroups.TOOLS, id("infinity_ender_cane")).maxCount(1), -1));
 
         ENDER_CANE_TYPE = registry.registerScreenHandlerType(id("ender_cane_gui"), () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build());
 

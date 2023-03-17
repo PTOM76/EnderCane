@@ -1,5 +1,6 @@
 package ml.pkom.endercane.client;
 
+import ml.pkom.endercane.EnderCane;
 import ml.pkom.endercane.EnderCaneMod;
 import ml.pkom.endercane.EnderCaneScreenHandler;
 import ml.pkom.mcpitanlibarch.api.client.SimpleHandledScreen;
@@ -11,6 +12,7 @@ import ml.pkom.mcpitanlibarch.api.util.client.ScreenUtil;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -22,6 +24,7 @@ import net.minecraft.util.Identifier;
 public class EnderCaneScreen extends SimpleHandledScreen {
 
     public static Identifier GUI = EnderCaneMod.id("textures/gui/container/ender_cane_gui.png");
+    public static Identifier GUI_INFINITY = EnderCaneMod.id("textures/gui/container/ender_cane_gui_infinity.png");
     public int selectIndex = -1;
     public int firstIndex = 0;
 
@@ -235,9 +238,9 @@ public class EnderCaneScreen extends SimpleHandledScreen {
 
     @Override
     public void drawBackgroundOverride(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        ScreenUtil.setBackground(GUI);
+        ItemStack handStack = ((EnderCaneScreenHandler) handler).handStack;
+        ScreenUtil.setBackground(handStack.isEmpty() || ((EnderCane) handStack.getItem()).getMaxPearlAmount() != -1 ? GUI : GUI_INFINITY);
         callDrawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
-
     }
 
     @Override

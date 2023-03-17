@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NEN",
+    "MPA",
+    "NEN"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "E": {
+      "item": "minecraft:end_crystal"
+    },
+    "M": {
+      "item": "endercane:medium_ender_cane"
+    },
+    "P": {
+      "item": "endercane:ender_cane"
+    },
+    "A": {
+      "item": "endercane:advanced_ender_cane"
+    }
+  },
+  "result": {
+    "item": "endercane:infinity_ender_cane",
+    "count": 1
+  }
+}

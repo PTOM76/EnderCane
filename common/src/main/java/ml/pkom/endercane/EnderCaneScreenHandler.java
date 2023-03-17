@@ -39,16 +39,17 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         addPlayerHotbarSlots(playerInventory, 8, 142);
         addPlayerMainInventorySlots(playerInventory, 8, 84);
 
+        if (handStack.isEmpty() || ((EnderCane) handStack.getItem()).getMaxPearlAmount() != -1) {
+            addSlot(new EnderPearlSexSlot(this, inventory, 0, 15, 47));
+            Slot slot = new EnderPearlExtractSlot(this, inventory, 1, 35, 47);
+            addSlot(slot);
 
-        addSlot(new EnderPearlSexSlot(this, inventory, 0, 15, 47));
-        Slot slot = new EnderPearlExtractSlot(this, inventory, 1, 35, 47);
-        addSlot(slot);
-
-        if (handStack.hasNbt() && handStack.getNbt().contains("ender_pearl")) {
-            NbtCompound nbt = handStack.getNbt();
-            int pearlCount = nbt.getInt("ender_pearl");
-            if (pearlCount > 0)
-                slot.setStack(new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+            if (handStack.hasNbt() && handStack.getNbt().contains("ender_pearl")) {
+                NbtCompound nbt = handStack.getNbt();
+                int pearlCount = nbt.getInt("ender_pearl");
+                if (pearlCount > 0)
+                    slot.setStack(new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+            }
         }
     }
 
@@ -106,23 +107,23 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
     }
 
     public static void addPoint(EnderCaneScreenHandler screenHandler, BlockPos pos) {
+        NbtCompound nbt = new NbtCompound();
         if (screenHandler.handStack.hasNbt()) {
-            NbtCompound nbt = screenHandler.handStack.getNbt();
-
-            NbtList points = new NbtList();
-            if (nbt.contains("Points"))
-                points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
-
-            NbtCompound posNbt = new NbtCompound();
-            posNbt.putInt("x", pos.getX());
-            posNbt.putInt("y", pos.getY());
-            posNbt.putInt("z", pos.getZ());
-            points.add(posNbt);
-
-            nbt.put("Points", points);
-
-            screenHandler.handStack.setNbt(nbt);
+            nbt = screenHandler.handStack.getNbt();
         }
+        NbtList points = new NbtList();
+        if (nbt.contains("Points"))
+            points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
+
+        NbtCompound posNbt = new NbtCompound();
+        posNbt.putInt("x", pos.getX());
+        posNbt.putInt("y", pos.getY());
+        posNbt.putInt("z", pos.getZ());
+        points.add(posNbt);
+
+        nbt.put("Points", points);
+
+        screenHandler.handStack.setNbt(nbt);
     }
 
     public static void setPoint(EnderCaneScreenHandler screenHandler, int index) {
