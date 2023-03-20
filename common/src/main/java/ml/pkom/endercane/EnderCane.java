@@ -5,6 +5,7 @@ import ml.pkom.mcpitanlibarch.api.entity.Player;
 import ml.pkom.mcpitanlibarch.api.event.item.ItemUseEvent;
 import ml.pkom.mcpitanlibarch.api.event.item.ItemUseOnBlockEvent;
 import ml.pkom.mcpitanlibarch.api.gui.ExtendedNamedScreenHandlerFactory;
+import ml.pkom.mcpitanlibarch.api.item.CompatibleItemSettings;
 import ml.pkom.mcpitanlibarch.api.item.ExtendItem;
 import ml.pkom.mcpitanlibarch.api.util.TextUtil;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,7 @@ import net.minecraft.util.math.MathHelper;
 public class EnderCane extends ExtendItem {
     private final int maxPearlAmount;
 
-    public EnderCane(Settings settings, int maxPearlAmount) {
+    public EnderCane(CompatibleItemSettings settings, int maxPearlAmount) {
         super(settings);
         this.maxPearlAmount = maxPearlAmount;
     }

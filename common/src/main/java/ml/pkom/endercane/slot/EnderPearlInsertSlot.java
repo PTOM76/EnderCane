@@ -2,25 +2,26 @@ package ml.pkom.endercane.slot;
 
 import ml.pkom.endercane.EnderCane;
 import ml.pkom.endercane.EnderCaneScreenHandler;
+import ml.pkom.mcpitanlibarch.api.gui.slot.CompatibleSlot;
+import ml.pkom.mcpitanlibarch.api.nbt.NbtTag;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.slot.Slot;
 
-public class EnderPearlSexSlot extends Slot {
+public class EnderPearlInsertSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;
-    public EnderPearlSexSlot(EnderCaneScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
+    public EnderPearlInsertSlot(EnderCaneScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
     }
 
     @Override
-    public void setStack(ItemStack stack) {
+    public void callSetStack(ItemStack stack) {
         if (stack.getItem() == Items.ENDER_PEARL) {
             ItemStack handStack = screenHandler.handStack;
             int pearlCount = 0;
-            NbtCompound nbt = new NbtCompound();
+            NbtCompound nbt = NbtTag.create();
             if (handStack.hasNbt()) {
                 nbt = handStack.getNbt();
                 if (nbt.contains("ender_pearl"))
@@ -32,10 +33,10 @@ public class EnderPearlSexSlot extends Slot {
                 screenHandler.inventory.setStack(1, new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
             }
             handStack.setNbt(nbt);
-            super.setStack(ItemStack.EMPTY);
+            super.callSetStack(ItemStack.EMPTY);
             return;
         }
-        super.setStack(stack);
+        super.callSetStack(stack);
     }
 
     @Override

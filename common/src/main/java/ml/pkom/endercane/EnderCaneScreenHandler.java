@@ -1,9 +1,11 @@
 package ml.pkom.endercane;
 
 import ml.pkom.endercane.slot.EnderPearlExtractSlot;
-import ml.pkom.endercane.slot.EnderPearlSexSlot;
+import ml.pkom.endercane.slot.EnderPearlInsertSlot;
 import ml.pkom.mcpitanlibarch.api.entity.Player;
 import ml.pkom.mcpitanlibarch.api.gui.ExtendedScreenHandler;
+import ml.pkom.mcpitanlibarch.api.nbt.NbtTag;
+import ml.pkom.mcpitanlibarch.api.util.SlotUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -40,7 +42,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         addPlayerMainInventorySlots(playerInventory, 8, 84);
 
         if (handStack.isEmpty() || ((EnderCane) handStack.getItem()).getMaxPearlAmount() != -1) {
-            addSlot(new EnderPearlSexSlot(this, inventory, 0, 15, 47));
+            addSlot(new EnderPearlInsertSlot(this, inventory, 0, 15, 47));
             Slot slot = new EnderPearlExtractSlot(this, inventory, 1, 35, 47);
             addSlot(slot);
 
@@ -48,7 +50,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                 NbtCompound nbt = handStack.getNbt();
                 int pearlCount = nbt.getInt("ender_pearl");
                 if (pearlCount > 0)
-                    slot.setStack(new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                    SlotUtil.setStack(slot, new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
             }
         }
     }
@@ -63,7 +65,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
 
             if (index == 37 && itemStack.getItem() == Items.ENDER_PEARL) {
                 int pearlCount = 0;
-                NbtCompound nbt = new NbtCompound();
+                NbtCompound nbt = NbtTag.create();
                 if (handStack.hasNbt()) {
                     nbt = handStack.getNbt();
                     if (nbt.contains("ender_pearl"))
@@ -91,7 +93,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
             }
 
             if (itemStack2.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                SlotUtil.setStack(slot, ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
@@ -107,7 +109,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
     }
 
     public static void addPoint(EnderCaneScreenHandler screenHandler, BlockPos pos) {
-        NbtCompound nbt = new NbtCompound();
+        NbtCompound nbt = NbtTag.create();
         if (screenHandler.handStack.hasNbt()) {
             nbt = screenHandler.handStack.getNbt();
         }
@@ -115,7 +117,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         if (nbt.contains("Points"))
             points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
 
-        NbtCompound posNbt = new NbtCompound();
+        NbtCompound posNbt = NbtTag.create();
         posNbt.putInt("x", pos.getX());
         posNbt.putInt("y", pos.getY());
         posNbt.putInt("z", pos.getZ());
