@@ -5,12 +5,15 @@ import ml.pkom.endercane.EnderCaneMod;
 import ml.pkom.endercane.EnderCaneScreenHandler;
 import ml.pkom.mcpitanlibarch.api.client.SimpleHandledScreen;
 import ml.pkom.mcpitanlibarch.api.client.gui.widget.RedrawableTexturedButtonWidget;
+import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawBackgroundArgs;
+import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawForegroundArgs;
+import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawMouseoverTooltipArgs;
+import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.RenderArgs;
 import ml.pkom.mcpitanlibarch.api.network.ClientNetworking;
 import ml.pkom.mcpitanlibarch.api.network.PacketByteUtil;
 import ml.pkom.mcpitanlibarch.api.util.TextUtil;
 import ml.pkom.mcpitanlibarch.api.util.client.ScreenUtil;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -219,8 +222,8 @@ public class EnderCaneScreen extends SimpleHandledScreen {
     }
 
     @Override
-    protected void drawForegroundOverride(MatrixStack matrices, int mouseX, int mouseY) {
-        super.drawForegroundOverride(matrices, mouseX, mouseY);
+    protected void drawForegroundOverride(DrawForegroundArgs args) {
+        super.drawForegroundOverride(args);
         if (handler instanceof EnderCaneScreenHandler) {
             EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) handler;
             if (screenHandler.handStack.hasNbt() && screenHandler.handStack.getNbt().contains("Points")) {
@@ -229,7 +232,7 @@ public class EnderCaneScreen extends SimpleHandledScreen {
                 for (int i = 0; i < 7; i++) {
                     if (points.size() >= 1 + firstIndex + i) {
                         NbtCompound pos = points.getCompound(firstIndex + i);
-                        textRenderer.draw(matrices, TextUtil.literal("§e" + (firstIndex + i + 1) + ".§r" + pos.getInt("x") + ", " + pos.getInt("y") + ", " + pos.getInt("z")), 80 + 1, 8 + (9 * i) + 1, 0xFFFFFF);
+                        ScreenUtil.RendererUtil.drawText(textRenderer, args.drawObjectDM, TextUtil.literal("§e" + (firstIndex + i + 1) + ".§r" + pos.getInt("x") + ", " + pos.getInt("y") + ", " + pos.getInt("z")), 80 + 1, 8 + (9 * i) + 1, 0xFFFFFF);
                     }
                 }
             }
@@ -237,10 +240,10 @@ public class EnderCaneScreen extends SimpleHandledScreen {
     }
 
     @Override
-    public void drawBackgroundOverride(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+    public void drawBackgroundOverride(DrawBackgroundArgs args) {
         ItemStack handStack = ((EnderCaneScreenHandler) handler).handStack;
-        ScreenUtil.setBackground(handStack.isEmpty() || ((EnderCane) handStack.getItem()).getMaxPearlAmount() != -1 ? GUI : GUI_INFINITY);
-        callDrawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        Identifier TEXTURE = (handStack.isEmpty() || ((EnderCane) handStack.getItem()).getMaxPearlAmount() != -1 ? GUI : GUI_INFINITY);
+        callDrawTexture(args.drawObjectDM, TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 
     @Override
@@ -263,9 +266,9 @@ public class EnderCaneScreen extends SimpleHandledScreen {
     }
 
     @Override
-    public void renderOverride(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.callRenderBackground(matrices);
-        super.renderOverride(matrices, mouseX, mouseY, delta);
-        this.callDrawMouseoverTooltip(matrices, mouseX, mouseY);
+    public void renderOverride(RenderArgs args) {
+        this.callRenderBackground(args.drawObjectDM);
+        super.renderOverride(args);
+        this.callDrawMouseoverTooltip(new DrawMouseoverTooltipArgs(args.drawObjectDM, args.mouseX, args.mouseY));
     }
 }

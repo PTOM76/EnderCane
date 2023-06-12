@@ -63,6 +63,8 @@ subprojects {
                     addGameVersion '1.19.1'
                     addGameVersion '1.19.2'
                     addGameVersion '1.19.3'
+                    addGameVersion '1.19.4'
+                    addGameVersion '1.20'
                     relations {
                         if (modLoader == "fabric") {
                             requiredDependency "fabric-api"
@@ -84,7 +86,7 @@ subprojects {
                 token = System.getenv("MODRINTH_TOKEN")
                 projectId = 'liIQE7kB'
                 versionNumber = project.mod_version + "-" + modLoader
-                gameVersions = ['1.17', '1.17.1', '1.18', '1.18.1', '1.18.2', '1.19', '1.19.1', '1.19.2', '1.19.3']
+                gameVersions = ['1.17', '1.17.1', '1.18', '1.18.1', '1.18.2', '1.19', '1.19.1', '1.19.2', '1.19.3', '1.19.4', '1.20']
                 versionType = 'release'
                 uploadFile = tasks.remapJar
                 changelog = rootProject.changelog

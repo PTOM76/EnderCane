@@ -4,6 +4,7 @@ import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import ml.pkom.endercane.EnderCaneMod;
 import ml.pkom.endercane.forge.client.EnderCaneForgeClient;
+import net.fabricmc.api.EnvType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -14,7 +15,7 @@ public class EnderCaneForge {
         EventBuses.registerModEventBus(EnderCaneMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         EnderCaneMod.init();
 
-        if (Platform.getEnv().isClient())
+        if (Platform.getEnv() == EnvType.CLIENT)
             FMLJavaModLoadingContext.get().getModEventBus().addListener(EnderCaneForgeClient::clientInit);
     }
 }
