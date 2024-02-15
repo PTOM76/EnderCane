@@ -1,7 +1,7 @@
-package ml.pkom.endercane.client;
+package net.pitan76.endercane.client;
 
-import ml.pkom.endercane.EnderCaneMod;
-import ml.pkom.mcpitanlibarch.api.client.registry.ArchRegistryClient;
+import net.pitan76.endercane.EnderCaneMod;
+import net.pitan76.mcpitanlib.api.client.registry.ArchRegistryClient;
 
 public class EnderCaneClientMod {
     public static void init() {

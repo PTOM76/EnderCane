@@ -1,4 +1,4 @@
-package ml.pkom.endercane;
+package net.pitan76.endercane;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;

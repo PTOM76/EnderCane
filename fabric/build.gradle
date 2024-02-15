@@ -26,7 +26,8 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modApi "ml.pkom:mcpitanlibarch-fabric+${rootProject.mcpitanlibarch_mcversion}:${rootProject.mcpitanlibarch_version}"
+    modApi "net.pitan76:mcpitanlib-fabric+${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
+    include "net.pitan76:mcpitanlib_checker-fabric:${rootProject.mcpitanlib_checker_version}"
 }
 
 processResources {
@@ -34,7 +35,7 @@ processResources {
             "mod_name": project.mod_name,
             "version": project.version,
             "mod_id": project.mod_id,
-            "mcpitanlibarch_version": rootProject.mcpitanlibarch_version
+            "mcpitanlib_version": rootProject.mcpitanlib_version
     ]
     inputs.properties map
 

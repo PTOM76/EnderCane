@@ -1,11 +1,5 @@
-package ml.pkom.endercane;
+package net.pitan76.endercane;
 
-import ml.pkom.endercane.slot.EnderPearlExtractSlot;
-import ml.pkom.endercane.slot.EnderPearlInsertSlot;
-import ml.pkom.mcpitanlibarch.api.entity.Player;
-import ml.pkom.mcpitanlibarch.api.gui.ExtendedScreenHandler;
-import ml.pkom.mcpitanlibarch.api.nbt.NbtTag;
-import ml.pkom.mcpitanlibarch.api.util.SlotUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -17,6 +11,12 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.pitan76.endercane.slot.EnderPearlExtractSlot;
+import net.pitan76.endercane.slot.EnderPearlInsertSlot;
+import net.pitan76.mcpitanlib.api.entity.Player;
+import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandler;
+import net.pitan76.mcpitanlib.api.nbt.NbtTag;
+import net.pitan76.mcpitanlib.api.util.SlotUtil;
 
 public class EnderCaneScreenHandler extends ExtendedScreenHandler {
 

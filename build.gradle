@@ -19,22 +19,16 @@ subprojects {
     }
 
     repositories {
-        maven { url "https://maven.pkom.ml/" }
+        maven { url "https://maven.pitan76.net/" }
     }
 
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // The following line declares the mojmap mappings, you may use other mappings as well
-
-        // Mojang公式Mappings
-        //mappings loom.officialMojangMappings()
-
-        // The following line declares the yarn mappings you may select this one as well.
         // FabricのYarn Mappings
         mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
 
-        modApi "ml.pkom:mcpitanlibarch-common+${rootProject.mcpitanlibarch_mcversion}:${rootProject.mcpitanlibarch_version}"
+        modApi "net.pitan76:mcpitanlib-common+${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
     }
 
     if (name in "fabric,forge".split(",")) {
@@ -54,22 +48,21 @@ subprojects {
                         releaseType = 'beta'
                         addGameVersion "Forge"
                     }
-                    addGameVersion '1.17'
-                    addGameVersion '1.17.1'
                     addGameVersion '1.18'
                     addGameVersion '1.18.1'
                     addGameVersion '1.18.2'
                     addGameVersion '1.19'
                     addGameVersion '1.19.1'
                     addGameVersion '1.19.2'
-                    addGameVersion '1.19.3'
-                    addGameVersion '1.19.4'
                     addGameVersion '1.20'
+                    addGameVersion '1.20.1'
+                    addGameVersion '1.20.3'
+                    addGameVersion '1.20.4'
                     relations {
                         if (modLoader == "fabric") {
                             requiredDependency "fabric-api"
                         }
-                        requiredDependency 'mcpitanlibarch'
+                        requiredDependency 'mcpitanlib'
                     }
 
                     mainArtifact(tasks.remapJar)
@@ -86,7 +79,7 @@ subprojects {
                 token = System.getenv("MODRINTH_TOKEN")
                 projectId = 'liIQE7kB'
                 versionNumber = project.mod_version + "-" + modLoader
-                gameVersions = ['1.17', '1.17.1', '1.18', '1.18.1', '1.18.2', '1.19', '1.19.1', '1.19.2', '1.19.3', '1.19.4', '1.20']
+                gameVersions = ['1.18', '1.18.1', '1.18.2', '1.19', '1.19.1', '1.19.2', '1.20', '1.20.1', '1.20.3', '1.20.4']
                 versionType = 'release'
                 uploadFile = tasks.remapJar
                 changelog = rootProject.changelog
@@ -95,7 +88,7 @@ subprojects {
                     if (modLoader == "fabric") {
                         required.project "P7dR8mSH" // Fabric API
                     }
-                    required.project "uNRoUnGT" // MCPitanLibarch
+                    required.project "uNRoUnGT" // mcpitanlib
                 }
             }
         }
@@ -123,7 +116,7 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = 8
     }
 
     java {

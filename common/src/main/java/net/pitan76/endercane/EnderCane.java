@@ -1,19 +1,19 @@
-package ml.pkom.endercane;
+package net.pitan76.endercane;
 
 import dev.architectury.registry.menu.MenuRegistry;
-import ml.pkom.mcpitanlibarch.api.entity.Player;
-import ml.pkom.mcpitanlibarch.api.event.item.ItemUseEvent;
-import ml.pkom.mcpitanlibarch.api.event.item.ItemUseOnBlockEvent;
-import ml.pkom.mcpitanlibarch.api.gui.ExtendedNamedScreenHandlerFactory;
-import ml.pkom.mcpitanlibarch.api.item.CompatibleItemSettings;
-import ml.pkom.mcpitanlibarch.api.item.ExtendItem;
-import ml.pkom.mcpitanlibarch.api.util.TextUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
+import net.pitan76.mcpitanlib.api.entity.Player;
+import net.pitan76.mcpitanlib.api.event.item.ItemUseEvent;
+import net.pitan76.mcpitanlib.api.event.item.ItemUseOnBlockEvent;
+import net.pitan76.mcpitanlib.api.gui.ExtendedNamedScreenHandlerFactory;
+import net.pitan76.mcpitanlib.api.item.CompatibleItemSettings;
+import net.pitan76.mcpitanlib.api.item.ExtendItem;
+import net.pitan76.mcpitanlib.api.util.TextUtil;
 
 public class EnderCane extends ExtendItem {
     private final int maxPearlAmount;

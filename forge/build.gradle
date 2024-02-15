@@ -24,7 +24,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    modApi "ml.pkom:mcpitanlibarch-forge+${rootProject.mcpitanlibarch_mcversion}:${rootProject.mcpitanlibarch_version}"
+    modApi "net.pitan76:mcpitanlib-forge+${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
 }
 
 processResources {
@@ -32,7 +32,7 @@ processResources {
             "mod_name": project.mod_name,
             "version": project.version,
             "mod_id": project.mod_id,
-            "mcpitanlibarch_version": rootProject.mcpitanlibarch_version
+            "mcpitanlib_version": rootProject.mcpitanlib_version
     ]
     inputs.properties map
 

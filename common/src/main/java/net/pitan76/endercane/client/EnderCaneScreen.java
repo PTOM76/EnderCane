@@ -1,18 +1,5 @@
-package ml.pkom.endercane.client;
+package net.pitan76.endercane.client;
 
-import ml.pkom.endercane.EnderCane;
-import ml.pkom.endercane.EnderCaneMod;
-import ml.pkom.endercane.EnderCaneScreenHandler;
-import ml.pkom.mcpitanlibarch.api.client.SimpleHandledScreen;
-import ml.pkom.mcpitanlibarch.api.client.gui.widget.RedrawableTexturedButtonWidget;
-import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawBackgroundArgs;
-import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawForegroundArgs;
-import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.DrawMouseoverTooltipArgs;
-import ml.pkom.mcpitanlibarch.api.client.render.handledscreen.RenderArgs;
-import ml.pkom.mcpitanlibarch.api.network.ClientNetworking;
-import ml.pkom.mcpitanlibarch.api.network.PacketByteUtil;
-import ml.pkom.mcpitanlibarch.api.util.TextUtil;
-import ml.pkom.mcpitanlibarch.api.util.client.ScreenUtil;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -23,6 +10,19 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.pitan76.endercane.EnderCane;
+import net.pitan76.endercane.EnderCaneMod;
+import net.pitan76.endercane.EnderCaneScreenHandler;
+import net.pitan76.mcpitanlib.api.client.SimpleHandledScreen;
+import net.pitan76.mcpitanlib.api.client.gui.widget.RedrawableTexturedButtonWidget;
+import net.pitan76.mcpitanlib.api.client.render.handledscreen.DrawBackgroundArgs;
+import net.pitan76.mcpitanlib.api.client.render.handledscreen.DrawForegroundArgs;
+import net.pitan76.mcpitanlib.api.client.render.handledscreen.DrawMouseoverTooltipArgs;
+import net.pitan76.mcpitanlib.api.client.render.handledscreen.RenderArgs;
+import net.pitan76.mcpitanlib.api.network.ClientNetworking;
+import net.pitan76.mcpitanlib.api.network.PacketByteUtil;
+import net.pitan76.mcpitanlib.api.util.TextUtil;
+import net.pitan76.mcpitanlib.api.util.client.ScreenUtil;
 
 public class EnderCaneScreen extends SimpleHandledScreen {
 

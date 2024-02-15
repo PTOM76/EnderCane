@@ -1,7 +1,7 @@
-package ml.pkom.endercane.forge.client;
+package net.pitan76.endercane.forge.client;
 
-import ml.pkom.endercane.client.EnderCaneClientMod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.pitan76.endercane.client.EnderCaneClientMod;
 
 public class EnderCaneForgeClient {
     public static void clientInit(FMLClientSetupEvent event) {

@@ -1,12 +1,12 @@
-package ml.pkom.endercane.slot;
+package net.pitan76.endercane.slot;
 
-import ml.pkom.endercane.EnderCaneScreenHandler;
-import ml.pkom.mcpitanlibarch.api.gui.slot.CompatibleSlot;
-import ml.pkom.mcpitanlibarch.api.nbt.NbtTag;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.pitan76.endercane.EnderCaneScreenHandler;
+import net.pitan76.mcpitanlib.api.gui.slot.CompatibleSlot;
+import net.pitan76.mcpitanlib.api.nbt.NbtTag;
 
 public class EnderPearlExtractSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;

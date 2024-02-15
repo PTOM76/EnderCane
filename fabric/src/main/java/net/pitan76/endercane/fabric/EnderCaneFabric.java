@@ -1,10 +1,10 @@
-package ml.pkom.endercane.fabric;
+package net.pitan76.endercane.fabric;
 
-import ml.pkom.endercane.EnderCaneMod;
-import ml.pkom.endercane.client.EnderCaneClientMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.pitan76.endercane.EnderCaneMod;
+import net.pitan76.endercane.client.EnderCaneClientMod;
 
 public class EnderCaneFabric implements ModInitializer {
     @Override

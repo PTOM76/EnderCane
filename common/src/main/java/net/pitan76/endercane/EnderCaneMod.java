@@ -1,27 +1,27 @@
-package ml.pkom.endercane;
+package net.pitan76.endercane;
 
-import ml.pkom.mcpitanlibarch.api.event.registry.RegistryEvent;
-import ml.pkom.mcpitanlibarch.api.gui.ExtendedScreenHandlerTypeBuilder;
-import ml.pkom.mcpitanlibarch.api.item.CompatibleItemSettings;
-import ml.pkom.mcpitanlibarch.api.item.DefaultItemGroups;
-import ml.pkom.mcpitanlibarch.api.network.ServerNetworking;
-import ml.pkom.mcpitanlibarch.api.registry.ArchRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerTypeBuilder;
+import net.pitan76.mcpitanlib.api.item.CompatibleItemSettings;
+import net.pitan76.mcpitanlib.api.item.DefaultItemGroups;
+import net.pitan76.mcpitanlib.api.network.ServerNetworking;
+import net.pitan76.mcpitanlib.api.registry.CompatRegistry;
+import net.pitan76.mcpitanlib.api.registry.result.RegistryResult;
 
 public class EnderCaneMod {
     public static final String MOD_ID = "endercane";
 
-    public static ArchRegistry registry = new ArchRegistry(MOD_ID);
+    public static CompatRegistry registry = new CompatRegistry(MOD_ID);
 
-    public static RegistryEvent<Item> PURE_ENDER_CANE;
-    public static RegistryEvent<Item> MEDIUM_ENDER_CANE;
-    public static RegistryEvent<Item> ADVANCED_ENDER_CANE;
-    public static RegistryEvent<Item> INFINITY_ENDER_CANE;
+    public static RegistryResult<Item> PURE_ENDER_CANE;
+    public static RegistryResult<Item> MEDIUM_ENDER_CANE;
+    public static RegistryResult<Item> ADVANCED_ENDER_CANE;
+    public static RegistryResult<Item> INFINITY_ENDER_CANE;
 
-    public static RegistryEvent<ScreenHandlerType<?>> ENDER_CANE_TYPE;
+    public static RegistryResult<ScreenHandlerType<?>> ENDER_CANE_TYPE;
 
     public static void init() {
         PURE_ENDER_CANE = registry.registerItem(id("ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
