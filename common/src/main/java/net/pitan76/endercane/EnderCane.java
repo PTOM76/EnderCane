@@ -69,6 +69,7 @@ public class EnderCane extends ExtendItem {
                     if (getMaxPearlAmount() != -1) {
                         pearlCount--;
                         NbtUtil.set(nbt, "ender_pearl", pearlCount);
+                        CustomDataUtil.setNbt(stack, nbt);
                     }
                 }
             }
@@ -118,6 +119,7 @@ public class EnderCane extends ExtendItem {
                     if (getMaxPearlAmount() != -1) {
                         pearlCount--;
                         NbtUtil.set(nbt, "ender_pearl", pearlCount);
+                        CustomDataUtil.setNbt(stack, nbt);
                     }
                 }
             }
