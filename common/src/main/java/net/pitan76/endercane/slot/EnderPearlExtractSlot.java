@@ -6,7 +6,8 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.pitan76.endercane.EnderCaneScreenHandler;
 import net.pitan76.mcpitanlib.api.gui.slot.CompatibleSlot;
-import net.pitan76.mcpitanlib.api.nbt.NbtTag;
+import net.pitan76.mcpitanlib.api.util.CustomDataUtil;
+import net.pitan76.mcpitanlib.api.util.NbtUtil;
 
 public class EnderPearlExtractSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;
@@ -24,19 +25,19 @@ public class EnderPearlExtractSlot extends CompatibleSlot {
     public ItemStack callTakeStack(int amount) {
         ItemStack handStack = screenHandler.handStack;
         int pearlCount = 0;
-        NbtCompound nbt = NbtTag.create();
-        if (handStack.hasNbt()) {
-            nbt = handStack.getNbt();
-            if (nbt.contains("ender_pearl"))
-                pearlCount = nbt.getInt("ender_pearl");
+        NbtCompound nbt = NbtUtil.create();
+        if (CustomDataUtil.hasNbt(handStack)) {
+            nbt = CustomDataUtil.getNbt(handStack);
+            if (NbtUtil.has(nbt, "ender_pearl"))
+                pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
         }
         pearlCount -= amount;
-        nbt.putInt("ender_pearl", pearlCount);
+        NbtUtil.set(nbt, "ender_pearl", pearlCount);
         ItemStack takeStack = super.callTakeStack(amount);
         if (pearlCount > 0) {
             callSetStack(new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
         }
-        handStack.setNbt(nbt);
+        CustomDataUtil.setNbt(handStack, nbt);
 
         return takeStack;
     }

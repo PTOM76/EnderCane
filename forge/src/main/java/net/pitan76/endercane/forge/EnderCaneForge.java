@@ -13,7 +13,7 @@ public class EnderCaneForge {
     public EnderCaneForge() {
         // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(EnderCaneMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-        EnderCaneMod.init();
+        new EnderCaneMod();
 
         if (Platform.getEnvironment().toPlatform() == Dist.CLIENT)
             FMLJavaModLoadingContext.get().getModEventBus().addListener(EnderCaneForgeClient::clientInit);

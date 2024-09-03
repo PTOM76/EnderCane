@@ -1,18 +1,25 @@
 package net.pitan76.endercane;
 
-import dev.architectury.registry.menu.MenuRegistry;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.pitan76.mcpitanlib.api.entity.Player;
+import net.pitan76.mcpitanlib.api.event.container.factory.DisplayNameArgs;
+import net.pitan76.mcpitanlib.api.event.container.factory.ExtraDataArgs;
 import net.pitan76.mcpitanlib.api.event.item.ItemUseEvent;
 import net.pitan76.mcpitanlib.api.event.item.ItemUseOnBlockEvent;
-import net.pitan76.mcpitanlib.api.gui.ExtendedNamedScreenHandlerFactory;
+import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerFactory;
 import net.pitan76.mcpitanlib.api.item.CompatibleItemSettings;
 import net.pitan76.mcpitanlib.api.item.ExtendItem;
+import net.pitan76.mcpitanlib.api.util.ActionResultUtil;
+import net.pitan76.mcpitanlib.api.util.CustomDataUtil;
+import net.pitan76.mcpitanlib.api.util.NbtUtil;
 import net.pitan76.mcpitanlib.api.util.TextUtil;
 
 public class EnderCane extends ExtendItem {
@@ -24,67 +31,108 @@ public class EnderCane extends ExtendItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> onRightClick(ItemUseEvent event) {
-        Player player = event.user;
-        ItemStack stack = player.getPlayerEntity().getStackInHand(event.hand);
+    public TypedActionResult<ItemStack> onRightClick(ItemUseEvent e) {
+        Player player = e.user;
+        ItemStack stack = player.getPlayerEntity().getStackInHand(e.hand);
 
-        if (!event.world.isClient())
-            if (player.isSneaking() || !(stack.hasNbt() && stack.getNbt().contains("SelectPoint"))) {
-                MenuRegistry.openExtendedMenu((ServerPlayerEntity) player.getPlayerEntity(), new ExtendedNamedScreenHandlerFactory(TextUtil.translatable("gui.endercane.ender_cane_container"), (syncId, inv, p) -> new EnderCaneScreenHandler(syncId, inv, stack), (buf) -> {
-                    buf.writeString(event.hand.name());
-                }));
-            } else if (stack.hasNbt() && stack.getNbt().contains("SelectPoint")) {
-                NbtCompound nbt = stack.getNbt();
-                int pearlCount = nbt.getInt("ender_pearl");
-                if (pearlCount > 0 || getMaxPearlAmount() == -1) {
-                    NbtCompound point = nbt.getCompound("SelectPoint");
-                    if (point.contains("x") && point.contains("y") && point.contains("z")) {
-                        player.getEntity().teleport(point.getInt("x"), point.getInt("y"), point.getInt("z"));
+        if (e.isClient()) return ActionResultUtil.typedActionResult(ActionResult.SUCCESS, stack);
 
-                        if (getMaxPearlAmount() != -1) {
-                            pearlCount--;
-                            nbt.putInt("ender_pearl", pearlCount);
-                        }
+        if (e.isSneaking() || !(CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint"))) {
+            player.openExtendedMenu(new ExtendedScreenHandlerFactory() {
+                @Override
+                public Text getDisplayName(DisplayNameArgs args) {
+                    return TextUtil.translatable("gui.endercane.ender_cane_container");
+                }
+
+                @Override
+                public void writeExtraData(ExtraDataArgs args) {
+                    args.writeVar(e.hand.name());
+                }
+
+                @Override
+                public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                    return new EnderCaneScreenHandler(syncId, inv, stack);
+                }
+            });
+
+            return ActionResultUtil.typedActionResult(ActionResult.SUCCESS, stack);
+        }
+
+        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint")) {
+            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+            int pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+            if (pearlCount > 0 || getMaxPearlAmount() == -1) {
+                NbtCompound point = NbtUtil.get(nbt, "SelectPoint");
+                if (NbtUtil.has(point, "x") && NbtUtil.has(point, "y") && NbtUtil.has(point, "z")) {
+                    player.teleport(NbtUtil.get(point, "x", Integer.class), NbtUtil.get(point, "y", Integer.class), NbtUtil.get(point, "z", Integer.class));
+
+                    if (getMaxPearlAmount() != -1) {
+                        pearlCount--;
+                        NbtUtil.set(nbt, "ender_pearl", pearlCount);
                     }
                 }
             }
-        return TypedActionResult.success(stack);
+
+            return ActionResultUtil.typedActionResult(ActionResult.SUCCESS, stack);
+        }
+
+        return ActionResultUtil.typedActionResult(ActionResult.PASS, stack);
     }
 
     @Override
-    public ActionResult onRightClickOnBlock(ItemUseOnBlockEvent event) {
-        Player player = event.player;
-        ItemStack stack = player.getPlayerEntity().getStackInHand(event.hand);
+    public ActionResult onRightClickOnBlock(ItemUseOnBlockEvent e) {
+        Player player = e.player;
+        ItemStack stack = player.getPlayerEntity().getStackInHand(e.hand);
 
-        if (!event.world.isClient())
-            if (player.isSneaking() || !(stack.hasNbt() && stack.getNbt().contains("SelectPoint"))) {
-                MenuRegistry.openExtendedMenu((ServerPlayerEntity) player.getPlayerEntity(), new ExtendedNamedScreenHandlerFactory(TextUtil.translatable("gui.endercane.ender_cane_container"), (syncId, inv, p) -> new EnderCaneScreenHandler(syncId, inv, stack), (buf) -> {
-                    buf.writeString(event.hand.name());
-                    buf.writeBlockPos(event.hit.getBlockPos());
-                }));
-            } else if (stack.hasNbt() && stack.getNbt().contains("SelectPoint")) {
-                NbtCompound nbt = stack.getNbt();
-                int pearlCount = nbt.getInt("ender_pearl");
-                if (pearlCount > 0 || getMaxPearlAmount() == -1) {
-                    NbtCompound point = nbt.getCompound("SelectPoint");
-                    if (point.contains("x") && point.contains("y") && point.contains("z")) {
-                        player.getEntity().teleport(point.getInt("x"), point.getInt("y"), point.getInt("z"));
+        if (e.isClient()) return ActionResult.SUCCESS;
 
-                        if (getMaxPearlAmount() != -1) {
-                            pearlCount--;
-                            nbt.putInt("ender_pearl", pearlCount);
-                        }
+        if (player.isSneaking() || !(CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint"))) {
+            player.openExtendedMenu(new ExtendedScreenHandlerFactory() {
+                @Override
+                public Text getDisplayName(DisplayNameArgs args) {
+                    return TextUtil.translatable("gui.endercane.ender_cane_container");
+                }
+
+                @Override
+                public void writeExtraData(ExtraDataArgs args) {
+                    args.writeVar(e.hand.name());
+                    args.writeVar(e.getBlockPos());
+                }
+
+                @Override
+                public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                    return new EnderCaneScreenHandler(syncId, inv, stack);
+                }
+            });
+
+            return ActionResult.SUCCESS;
+        }
+        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint")) {
+            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+            int pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+            if (pearlCount > 0 || getMaxPearlAmount() == -1) {
+                NbtCompound point = NbtUtil.get(nbt, "SelectPoint");
+                if (NbtUtil.has(point, "x") && NbtUtil.has(point, "y") && NbtUtil.has(point, "z")) {
+                    player.teleport(NbtUtil.get(point, "x", Integer.class), NbtUtil.get(point, "y", Integer.class), NbtUtil.get(point, "z", Integer.class));
+
+                    if (getMaxPearlAmount() != -1) {
+                        pearlCount--;
+                        NbtUtil.set(nbt, "ender_pearl", pearlCount);
                     }
                 }
             }
-        return ActionResult.SUCCESS;
+
+            return ActionResult.SUCCESS;
+        }
+
+        return ActionResult.PASS;
     }
 
     @Override
     public int getItemBarStep(ItemStack stack) {
-        if (stack.hasNbt() && stack.getNbt().contains("ender_pearl")) {
-            NbtCompound nbt = stack.getNbt();
-            int pearlCount = nbt.getInt("ender_pearl");
+        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "ender_pearl")) {
+            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+            int pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
             return Math.round((float) pearlCount * 13.0F / (float) this.getMaxPearlAmount());
         }
         return 0;
@@ -93,9 +141,9 @@ public class EnderCane extends ExtendItem {
     @Override
     public int getItemBarColor(ItemStack stack) {
         int pearlCount = 0;
-        if (stack.hasNbt() && stack.getNbt().contains("ender_pearl")) {
-            NbtCompound nbt = stack.getNbt();
-            pearlCount = nbt.getInt("ender_pearl");
+        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "ender_pearl")) {
+            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+            pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
         }
         float f = 360 - 80 * Math.max(0.0F, (float)pearlCount / (float)this.getMaxPearlAmount());
         return MathHelper.hsvToRgb(f / 360, 1.0F, 1.0F);

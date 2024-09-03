@@ -2,19 +2,19 @@ package net.pitan76.endercane;
 
 import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.pitan76.mcpitanlib.api.CommonModInitializer;
 import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerTypeBuilder;
 import net.pitan76.mcpitanlib.api.item.CompatibleItemSettings;
 import net.pitan76.mcpitanlib.api.item.DefaultItemGroups;
 import net.pitan76.mcpitanlib.api.network.ServerNetworking;
-import net.pitan76.mcpitanlib.api.registry.CompatRegistry;
 import net.pitan76.mcpitanlib.api.registry.result.RegistryResult;
 
-public class EnderCaneMod {
+public class EnderCaneMod extends CommonModInitializer {
     public static final String MOD_ID = "endercane";
+    public static final String MOD_NAME = "Ender Cane";
 
-    public static CompatRegistry registry = new CompatRegistry(MOD_ID);
+    public static EnderCaneMod INSTANCE;
 
     public static RegistryResult<Item> PURE_ENDER_CANE;
     public static RegistryResult<Item> MEDIUM_ENDER_CANE;
@@ -23,13 +23,15 @@ public class EnderCaneMod {
 
     public static RegistryResult<ScreenHandlerType<?>> ENDER_CANE_TYPE;
 
-    public static void init() {
-        PURE_ENDER_CANE = registry.registerItem(id("ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
-        MEDIUM_ENDER_CANE = registry.registerItem(id("medium_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256));
-        ADVANCED_ENDER_CANE = registry.registerItem(id("advanced_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024));
-        INFINITY_ENDER_CANE = registry.registerItem(id("infinity_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("infinity_ender_cane")).maxCount(1), -1));
+    public void init() {
+        INSTANCE = this;
 
-        ENDER_CANE_TYPE = registry.registerScreenHandlerType(id("ender_cane_gui"), () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build());
+        PURE_ENDER_CANE = registry.registerItem(compatId("ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
+        MEDIUM_ENDER_CANE = registry.registerItem(compatId("medium_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256));
+        ADVANCED_ENDER_CANE = registry.registerItem(compatId("advanced_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024));
+        INFINITY_ENDER_CANE = registry.registerItem(compatId("infinity_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("infinity_ender_cane")).maxCount(1), -1));
+
+        ENDER_CANE_TYPE = registry.registerScreenHandlerType(compatId("ender_cane_gui"), () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build());
 
         ServerNetworking.registerReceiver(id("add_point"), ((server, player, buf) -> {
             BlockPos pos = buf.readBlockPos();
@@ -52,11 +54,15 @@ public class EnderCaneMod {
                 EnderCaneScreenHandler.removePoint(screenHandler, index);
             }
         }));
-
-        registry.allRegister();
     }
 
-    public static Identifier id(String path) {
-        return new Identifier(MOD_ID, path);
+    @Override
+    public String getId() {
+        return MOD_ID;
+    }
+
+    @Override
+    public String getName() {
+        return MOD_NAME;
     }
 }

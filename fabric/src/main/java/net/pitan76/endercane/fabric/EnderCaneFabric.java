@@ -9,7 +9,7 @@ import net.pitan76.endercane.client.EnderCaneClientMod;
 public class EnderCaneFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        EnderCaneMod.init();
+        new EnderCaneMod();
 
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
             EnderCaneClientMod.init();
