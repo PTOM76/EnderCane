@@ -46,9 +46,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         addPlayerHotbarSlots(playerInventory, 8, 142);
         addPlayerMainInventorySlots(playerInventory, 8, 84);
 
-        if (ItemStackUtil.isEmpty(handStack)) return;
-
-        if (((EnderCane) handStack.getItem()).getMaxPearlAmount() == -1) return;
+        if (!ItemStackUtil.isEmpty(handStack) && ((EnderCane) handStack.getItem()).getMaxPearlAmount() == -1) return;
 
         callAddSlot(new EnderPearlInsertSlot(this, inventory, 0, 15, 47));
 
