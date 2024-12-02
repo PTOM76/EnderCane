@@ -55,7 +55,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
 
         if (CustomDataUtil.hasNbt(handStack) && CustomDataUtil.has(handStack, "ender_pearl")) {
             NbtCompound nbt = CustomDataUtil.getNbt(handStack);
-            int pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+            int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             if (pearlCount > 0)
                 SlotUtil.setStack(extractSlot, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
         }
@@ -76,12 +76,12 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                 if (CustomDataUtil.hasNbt(handStack)) {
                     nbt = CustomDataUtil.getNbt(handStack);
                     if (NbtUtil.has(nbt, "ender_pearl"))
-                        pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+                        pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
                 }
                 pearlCount -= itemStack.getCount();
-                NbtUtil.set(nbt, "ender_pearl", pearlCount);
+                NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
                 if (pearlCount > 0) {
-                    inventory.setStack(1, new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                    inventory.setStack(1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
                 }
                 CustomDataUtil.setNbt(handStack, nbt);
             }
@@ -90,7 +90,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                 if (CustomDataUtil.hasNbt(handStack)) {
                     NbtCompound nbt = CustomDataUtil.getNbt(handStack);
                     if (NbtUtil.has(nbt, "ender_pearl"))
-                        pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+                        pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
                 }
                 if (pearlCount + itemStack2.getCount() >= ((EnderCane) handStack.getItem()).getMaxPearlAmount() || !this.callInsertItem(itemStack2, 36, 37, false)) {
                     return ItemStackUtil.empty();
@@ -120,18 +120,18 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         if (CustomDataUtil.hasNbt(screenHandler.handStack)) {
             nbt = CustomDataUtil.getNbt(screenHandler.handStack);
         }
-        NbtList points = new NbtList();
+        NbtList points = NbtUtil.createNbtList();
         if (NbtUtil.has(nbt, "Points"))
-            points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
+            points = NbtUtil.getNbtCompoundList(nbt, "Points");
 
         NbtCompound posNbt = NbtUtil.create();
-        NbtUtil.set(posNbt, "x", pos.getX());
-        NbtUtil.set(posNbt, "y", pos.getY());
-        NbtUtil.set(posNbt, "z", pos.getZ());
+        NbtUtil.putInt(posNbt, "x", pos.getX());
+        NbtUtil.putInt(posNbt, "y", pos.getY());
+        NbtUtil.putInt(posNbt, "z", pos.getZ());
         
         points.add(posNbt);
 
-        NbtUtil.set(nbt, "Points", points);
+        NbtUtil.put(nbt, "Points", points);
 
         CustomDataUtil.setNbt(screenHandler.handStack, nbt);
     }
@@ -140,15 +140,15 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         if (CustomDataUtil.hasNbt(screenHandler.handStack)) {
             NbtCompound nbt = CustomDataUtil.getNbt(screenHandler.handStack);
 
-            NbtList points = new NbtList();
+            NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
-                points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
+                points = NbtUtil.getNbtCompoundList(nbt, "Points");
 
             int i = 0;
             for (NbtElement q : points) {
                 if (i == index) {
                     NbtCompound point = (NbtCompound) q;
-                    NbtUtil.set(nbt, "SelectPoint", point);
+                    NbtUtil.put(nbt, "SelectPoint", point);
                     break;
                 }
                 i++;
@@ -162,9 +162,9 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         if (CustomDataUtil.hasNbt(screenHandler.handStack)) {
             NbtCompound nbt = CustomDataUtil.getNbt(screenHandler.handStack);
 
-            NbtList points = new NbtList();
+            NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
-                points = nbt.getList("Points", NbtElement.COMPOUND_TYPE);
+                points = NbtUtil.getNbtCompoundList(nbt, "Points");
 
             int i = 0;
             for (NbtElement q : points) {
@@ -176,7 +176,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                 i++;
             }
 
-            NbtUtil.set(nbt, "Points", points);
+            NbtUtil.put(nbt, "Points", points);
 
             CustomDataUtil.setNbt(screenHandler.handStack, nbt);
         }

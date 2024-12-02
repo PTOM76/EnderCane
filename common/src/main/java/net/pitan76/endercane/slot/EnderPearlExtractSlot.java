@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.pitan76.endercane.EnderCaneScreenHandler;
 import net.pitan76.mcpitanlib.api.gui.slot.CompatibleSlot;
 import net.pitan76.mcpitanlib.api.util.CustomDataUtil;
+import net.pitan76.mcpitanlib.api.util.ItemStackUtil;
 import net.pitan76.mcpitanlib.api.util.NbtUtil;
 
 public class EnderPearlExtractSlot extends CompatibleSlot {
@@ -29,13 +30,13 @@ public class EnderPearlExtractSlot extends CompatibleSlot {
         if (CustomDataUtil.hasNbt(handStack)) {
             nbt = CustomDataUtil.getNbt(handStack);
             if (NbtUtil.has(nbt, "ender_pearl"))
-                pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+                pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
         }
         pearlCount -= amount;
-        NbtUtil.set(nbt, "ender_pearl", pearlCount);
+        NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
         ItemStack takeStack = super.callTakeStack(amount);
         if (pearlCount > 0) {
-            callSetStack(new ItemStack(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+            callSetStack(ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
         }
         CustomDataUtil.setNbt(handStack, nbt);
 

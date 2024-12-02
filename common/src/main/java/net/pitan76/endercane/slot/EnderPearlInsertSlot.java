@@ -27,10 +27,10 @@ public class EnderPearlInsertSlot extends CompatibleSlot {
             if (CustomDataUtil.hasNbt(handStack)) {
                 nbt = CustomDataUtil.getNbt(handStack);
                 if (NbtUtil.has(nbt, "ender_pearl"))
-                    pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+                    pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             }
             pearlCount += stack.getCount();
-            NbtUtil.set(nbt, "ender_pearl", pearlCount);
+            NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
             if (pearlCount > 0) {
                 screenHandler.inventory.setStack(1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
             }
@@ -47,7 +47,7 @@ public class EnderPearlInsertSlot extends CompatibleSlot {
         EnderCane enderCane = (EnderCane) handStack.getItem();
         if (CustomDataUtil.hasNbt(handStack) && CustomDataUtil.has(handStack, "ender_pearl")) {
             NbtCompound nbt = CustomDataUtil.getNbt(handStack);
-            int pearlCount = NbtUtil.get(nbt, "ender_pearl", Integer.class);
+            int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             if (pearlCount >= enderCane.getMaxPearlAmount()) return false;
         }
         return super.canInsert(stack);

@@ -4,11 +4,14 @@ import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 import net.pitan76.mcpitanlib.api.CommonModInitializer;
+import net.pitan76.mcpitanlib.api.entity.Player;
 import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerTypeBuilder;
-import net.pitan76.mcpitanlib.api.item.CompatibleItemSettings;
-import net.pitan76.mcpitanlib.api.item.DefaultItemGroups;
-import net.pitan76.mcpitanlib.api.network.ServerNetworking;
+import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
+import net.pitan76.mcpitanlib.api.network.v2.ServerNetworking;
 import net.pitan76.mcpitanlib.api.registry.result.RegistryResult;
+import net.pitan76.mcpitanlib.api.registry.result.SupplierResult;
+import net.pitan76.mcpitanlib.api.util.CompatIdentifier;
+import net.pitan76.mcpitanlib.midohra.item.ItemGroups;
 
 public class EnderCaneMod extends CommonModInitializer {
     public static final String MOD_ID = "endercane";
@@ -21,39 +24,46 @@ public class EnderCaneMod extends CommonModInitializer {
     public static RegistryResult<Item> ADVANCED_ENDER_CANE;
     public static RegistryResult<Item> INFINITY_ENDER_CANE;
 
-    public static RegistryResult<ScreenHandlerType<?>> ENDER_CANE_TYPE;
+    public static SupplierResult<ScreenHandlerType<EnderCaneScreenHandler>> ENDER_CANE_TYPE;
 
     public void init() {
         INSTANCE = this;
 
-        PURE_ENDER_CANE = registry.registerItem(compatId("ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("ender_cane")).maxCount(1), 64));
-        MEDIUM_ENDER_CANE = registry.registerItem(compatId("medium_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("medium_ender_cane")).maxCount(1), 256));
-        ADVANCED_ENDER_CANE = registry.registerItem(compatId("advanced_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("advanced_ender_cane")).maxCount(1), 1024));
-        INFINITY_ENDER_CANE = registry.registerItem(compatId("infinity_ender_cane"), () -> new EnderCane(new CompatibleItemSettings().addGroup(DefaultItemGroups.TOOLS, id("infinity_ender_cane")).maxCount(1), -1));
+        PURE_ENDER_CANE = registry.registerItem(_id("ender_cane"), () -> new EnderCane(CompatibleItemSettings.of(_id("ender_cane")).addGroup(ItemGroups.TOOLS).maxCount(1), 64));
+        MEDIUM_ENDER_CANE = registry.registerItem(_id("medium_ender_cane"), () -> new EnderCane(CompatibleItemSettings.of(_id("medium_ender_cane")).addGroup(ItemGroups.TOOLS).maxCount(1), 256));
+        ADVANCED_ENDER_CANE = registry.registerItem(_id("advanced_ender_cane"), () -> new EnderCane(CompatibleItemSettings.of(_id("advanced_ender_cane")).addGroup(ItemGroups.TOOLS).maxCount(1), 1024));
+        INFINITY_ENDER_CANE = registry.registerItem(_id("infinity_ender_cane"), () -> new EnderCane(CompatibleItemSettings.of(_id("infinity_ender_cane")).addGroup(ItemGroups.TOOLS).maxCount(1), -1));
 
-        ENDER_CANE_TYPE = registry.registerScreenHandlerType(compatId("ender_cane_gui"), () -> new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new).build());
+        ENDER_CANE_TYPE = registry.registerScreenHandlerType(_id("ender_cane_gui"), new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new));
 
-        ServerNetworking.registerReceiver(id("add_point"), ((server, player, buf) -> {
-            BlockPos pos = buf.readBlockPos();
-            if (player.currentScreenHandler instanceof EnderCaneScreenHandler) {
-                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.currentScreenHandler;
+        ServerNetworking.registerReceiver(_id("add_point"), (e -> {
+            BlockPos pos = e.buf.readBlockPos();
+            Player player = e.player;
+            if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
+                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
                 EnderCaneScreenHandler.addPoint(screenHandler, pos);
             }
         }));
-        ServerNetworking.registerReceiver(id("set_point"), ((server, player, buf) -> {
-            int index = buf.readInt();
-            if (player.currentScreenHandler instanceof EnderCaneScreenHandler) {
-                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.currentScreenHandler;
+        ServerNetworking.registerReceiver(_id("set_point"), (e -> {
+            int index = e.buf.readInt();
+            Player player = e.player;
+            if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
+                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
                 EnderCaneScreenHandler.setPoint(screenHandler, index);
             }
         }));
-        ServerNetworking.registerReceiver(id("remove_point"), ((server, player, buf) -> {
-            int index = buf.readInt();
-            if (player.currentScreenHandler instanceof EnderCaneScreenHandler) {
-                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.currentScreenHandler;
+        ServerNetworking.registerReceiver(_id("remove_point"), (e -> {
+            int index = e.buf.readInt();
+            Player player = e.player;
+            if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
+                EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
                 EnderCaneScreenHandler.removePoint(screenHandler, index);
             }
         }));
+    }
+    
+    public static CompatIdentifier _id(String path) {
+        return CompatIdentifier.of(MOD_ID, path);
     }
 
     @Override
