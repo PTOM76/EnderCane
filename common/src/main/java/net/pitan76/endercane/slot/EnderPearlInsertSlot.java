@@ -13,6 +13,7 @@ import net.pitan76.mcpitanlib.api.util.NbtUtil;
 
 public class EnderPearlInsertSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;
+
     public EnderPearlInsertSlot(EnderCaneScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
@@ -42,7 +43,7 @@ public class EnderPearlInsertSlot extends CompatibleSlot {
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
+    public boolean canInsert(net.pitan76.mcpitanlib.midohra.item.ItemStack stack) {
         ItemStack handStack = screenHandler.handStack;
         EnderCane enderCane = (EnderCane) handStack.getItem();
         if (CustomDataUtil.hasNbt(handStack) && CustomDataUtil.has(handStack, "ender_pearl")) {

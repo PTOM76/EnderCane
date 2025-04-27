@@ -63,14 +63,14 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
 
     @Override
     public ItemStack quickMoveOverride(Player player, int index) {
-        ItemStack itemStack = ItemStackUtil.empty();
+        ItemStack originStack = ItemStackUtil.empty();
 
         Slot slot = ScreenHandlerUtil.getSlot(this, index);
         if (SlotUtil.hasStack(slot)) {
-            ItemStack itemStack2 = SlotUtil.getStack(slot);
-            itemStack = itemStack2.copy();
+            ItemStack stack = SlotUtil.getStack(slot);
+            originStack = ItemStackUtil.copy(stack);
 
-            if (index == 37 && itemStack.getItem() == Items.ENDER_PEARL) {
+            if (index == 37 && ItemStackUtil.getItem(originStack) == Items.ENDER_PEARL) {
                 int pearlCount = 0;
                 NbtCompound nbt = NbtUtil.create();
                 if (CustomDataUtil.hasNbt(handStack)) {
@@ -78,10 +78,10 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                     if (NbtUtil.has(nbt, "ender_pearl"))
                         pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
                 }
-                pearlCount -= itemStack.getCount();
+                pearlCount -= ItemStackUtil.getCount(originStack);
                 NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
                 if (pearlCount > 0) {
-                    inventory.setStack(1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                    InventoryUtil.setStack(inventory, 1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
                 }
                 CustomDataUtil.setNbt(handStack, nbt);
             }
@@ -92,27 +92,27 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                     if (NbtUtil.has(nbt, "ender_pearl"))
                         pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
                 }
-                if (pearlCount + itemStack2.getCount() >= ((EnderCane) handStack.getItem()).getMaxPearlAmount() || !this.callInsertItem(itemStack2, 36, 37, false)) {
+                if (pearlCount + ItemStackUtil.getCount(stack) >= ((EnderCane) handStack.getItem()).getMaxPearlAmount() || !this.callInsertItem(stack, 36, 37, false)) {
                     return ItemStackUtil.empty();
                 }
-            } else if (!this.callInsertItem(itemStack2, 0, 35, false)) {
+            } else if (!this.callInsertItem(stack, 0, 35, false)) {
                 return ItemStackUtil.empty();
             }
 
-            if (itemStack2.isEmpty()) {
+            if (ItemStackUtil.isEmpty(stack)) {
                 SlotUtil.setStack(slot, ItemStackUtil.empty());
             } else {
                 SlotUtil.markDirty(slot);
             }
 
-            if (itemStack2.getCount() == itemStack.getCount()) {
+            if (ItemStackUtil.getCount(stack) == ItemStackUtil.getCount(originStack)) {
                 return ItemStackUtil.empty();
             }
 
-            SlotUtil.onTakeItem(slot, player, itemStack2);
+            SlotUtil.onTakeItem(slot, player, stack);
         }
 
-        return itemStack;
+        return originStack;
     }
 
     public static void addPoint(EnderCaneScreenHandler screenHandler, BlockPos pos) {

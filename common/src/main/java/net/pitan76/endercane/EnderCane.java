@@ -15,7 +15,7 @@ import net.pitan76.mcpitanlib.api.event.container.factory.ExtraDataArgs;
 import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
 import net.pitan76.mcpitanlib.api.item.v2.CompatItem;
 
-public class EnderCane extends CompatItem  {
+public class EnderCane extends CompatItem {
     private final int maxPearlAmount;
 
     public EnderCane(CompatibleItemSettings settings, int maxPearlAmount) {

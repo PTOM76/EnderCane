@@ -12,6 +12,7 @@ import net.pitan76.mcpitanlib.api.util.NbtUtil;
 
 public class EnderPearlExtractSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;
+
     public EnderPearlExtractSlot(EnderCaneScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
@@ -49,7 +50,7 @@ public class EnderPearlExtractSlot extends CompatibleSlot {
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
+    public boolean canInsert(net.pitan76.mcpitanlib.midohra.item.ItemStack stack) {
         return false;
     }
 }

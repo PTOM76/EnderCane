@@ -16,6 +16,7 @@ import net.pitan76.mcpitanlib.api.network.v2.ClientNetworking;
 import net.pitan76.mcpitanlib.api.network.PacketByteUtil;
 import net.pitan76.mcpitanlib.api.util.*;
 import net.pitan76.mcpitanlib.api.util.client.ScreenUtil;
+import net.pitan76.mcpitanlib.api.util.nbt.NbtListUtil;
 
 import static net.pitan76.endercane.EnderCaneMod._id;
 
@@ -89,7 +90,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (points.isEmpty() || selectIndex + 1 > points.size()) {
+            if (NbtListUtil.isEmpty(points) || selectIndex + 1 > NbtListUtil.size(points)) {
                 REMOVE_BTN.active = false;
                 SET_BTN.active = false;
                 selectIndex = -1;
@@ -106,7 +107,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (firstIndex + 1 > points.size()) return;
+            if (firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = firstIndex;
 
@@ -123,7 +124,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (1 + firstIndex + 1 > points.size()) return;
+            if (1 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 1 + firstIndex;
 
@@ -140,7 +141,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (2 + firstIndex + 1 > points.size()) return;
+            if (2 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 2 + firstIndex;
 
@@ -157,7 +158,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (3 + firstIndex + 1 > points.size()) return;
+            if (3 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 3 + firstIndex;
 
@@ -174,7 +175,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (4 + firstIndex + 1 > points.size()) return;
+            if (4 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 4 + firstIndex;
 
@@ -191,7 +192,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (5 + firstIndex + 1 > points.size()) return;
+            if (5 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 5 + firstIndex;
 
@@ -208,7 +209,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtList points = NbtUtil.createNbtList();
             if (NbtUtil.has(nbt, "Points"))
                 points = NbtUtil.getNbtCompoundList(nbt, "Points");
-            if (6 + firstIndex + 1 > points.size()) return;
+            if (6 + firstIndex + 1 > NbtListUtil.size(points)) return;
 
             selectIndex = 6 + firstIndex;
 
@@ -233,8 +234,8 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             NbtCompound nbt = CustomDataUtil.getNbt(screenHandler.handStack);
             NbtList points = NbtUtil.getNbtCompoundList(nbt, "Points");
             for (int i = 0; i < 7; i++) {
-                if (points.size() >= 1 + firstIndex + i) {
-                    NbtCompound posNbt = points.getCompound(firstIndex + i);
+                if (NbtListUtil.size(points) >= 1 + firstIndex + i) {
+                    NbtCompound posNbt = NbtListUtil.getCompound(points, firstIndex + i);
                     ScreenUtil.RendererUtil.drawText(textRenderer, args.drawObjectDM, TextUtil.literal("§e" + (firstIndex + i + 1) + ".§r" + NbtUtil.getInt(posNbt, "x") + ", " + NbtUtil.getInt(posNbt, "y") + ", " + NbtUtil.getInt(posNbt, "z")), 80 + 1, 8 + (9 * i) + 1, 0xFFFFFF);
                 }
             }
@@ -251,7 +252,7 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
             points = NbtUtil.getNbtCompoundList(nbt, "Points");
 
         firstIndex -= (int) Math.round(amount);
-        if (firstIndex + 7 > points.size()) {
+        if (firstIndex + 7 > NbtListUtil.size(points)) {
             firstIndex += (int) Math.round(amount);
         }
         if (firstIndex < 0) {

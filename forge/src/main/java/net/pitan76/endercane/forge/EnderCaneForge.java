@@ -1,12 +1,11 @@
 package net.pitan76.endercane.forge;
 
-import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pitan76.endercane.EnderCaneMod;
 import net.pitan76.endercane.forge.client.EnderCaneForgeClient;
+import net.pitan76.mcpitanlib.api.util.PlatformUtil;
 
 @Mod(EnderCaneMod.MOD_ID)
 public class EnderCaneForge {
@@ -15,7 +14,7 @@ public class EnderCaneForge {
         EventBuses.registerModEventBus(EnderCaneMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         new EnderCaneMod();
 
-        if (Platform.getEnvironment().toPlatform() == Dist.CLIENT)
+        if (PlatformUtil.isClient())
             FMLJavaModLoadingContext.get().getModEventBus().addListener(EnderCaneForgeClient::clientInit);
     }
 }
