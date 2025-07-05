@@ -24,7 +24,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    modApi "net.pitan76:mcpitanlib-forge+${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
+    modApi "net.pitan76:mcpitanlib-forge-${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
 }
 
 processResources {

@@ -26,7 +26,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
-    modApi "net.pitan76:mcpitanlib-fabric+${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
+    modApi "net.pitan76:mcpitanlib-fabric-${rootProject.mcpitanlib_mcversion}:${rootProject.mcpitanlib_version}"
     include "net.pitan76:mcpitanlib_checker-fabric:${rootProject.mcpitanlib_checker_version}"
 }
 
