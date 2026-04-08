@@ -3,7 +3,6 @@ package net.pitan76.endercane;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 import net.pitan76.mcpitanlib.api.event.item.*;
 import net.pitan76.mcpitanlib.api.gui.args.CreateMenuEvent;
 import net.pitan76.mcpitanlib.api.gui.v2.ExtendedScreenHandlerFactory;
@@ -144,7 +143,38 @@ public class EnderCane extends CompatItem {
             pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
         }
         float f = 360 - 80 * Math.max(0.0F, (float)pearlCount / (float)this.getMaxPearlAmount());
-        return MathHelper.hsvToRgb(f / 360, 1.0F, 1.0F);
+        return hsvToRgb(f / 360, 1.0F, 1.0F);
+    }
+
+    public static int hsvToRgb(float h, float s, float v) {
+        float r = 0, g = 0, b = 0;
+
+        int i = (int)(h * 6);
+        float f = h * 6 - i;
+        float p = v * (1 - s);
+        float q = v * (1 - f * s);
+        float t = v * (1 - (1 - f) * s);
+
+        switch (i % 6) {
+            case 0:
+                r = v; g = t; b = p; break;
+            case 1:
+                r = q; g = v; b = p; break;
+            case 2:
+                r = p; g = v; b = t; break;
+            case 3:
+                r = p; g = q; b = v; break;
+            case 4:
+                r = t; g = p; b = v; break;
+            case 5:
+                r = v; g = p; b = q; break;
+        }
+
+        int ri = (int)(r * 255);
+        int gi = (int)(g * 255);
+        int bi = (int)(b * 255);
+
+        return (ri << 16) | (gi << 8) | bi;
     }
 
     @Override

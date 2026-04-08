@@ -6,6 +6,7 @@ import net.pitan76.mcpitanlib.api.CommonModInitializer;
 import net.pitan76.mcpitanlib.api.entity.Player;
 import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerTypeBuilder;
 import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
+import net.pitan76.mcpitanlib.api.network.PacketByteUtil;
 import net.pitan76.mcpitanlib.api.network.v2.ServerNetworking;
 import net.pitan76.mcpitanlib.api.registry.result.RegistryResult;
 import net.pitan76.mcpitanlib.api.registry.result.SupplierResult;
@@ -37,7 +38,7 @@ public class EnderCaneMod extends CommonModInitializer {
         ENDER_CANE_TYPE = registry.registerScreenHandlerType(_id("ender_cane_gui"), new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new));
 
         ServerNetworking.registerReceiver(_id("add_point"), (e -> {
-            BlockPos pos = BlockPos.of(e.buf.readBlockPos());
+            BlockPos pos = BlockPos.of(PacketByteUtil.readBlockPos(e.buf));
             Player player = e.player;
             if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
                 EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
@@ -45,7 +46,7 @@ public class EnderCaneMod extends CommonModInitializer {
             }
         }));
         ServerNetworking.registerReceiver(_id("set_point"), (e -> {
-            int index = e.buf.readInt();
+            int index = PacketByteUtil.readInt(e.buf);
             Player player = e.player;
             if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
                 EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
@@ -53,7 +54,7 @@ public class EnderCaneMod extends CommonModInitializer {
             }
         }));
         ServerNetworking.registerReceiver(_id("remove_point"), (e -> {
-            int index = e.buf.readInt();
+            int index = PacketByteUtil.readInt(e.buf);
             Player player = e.player;
             if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
                 EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();
