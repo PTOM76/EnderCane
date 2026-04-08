@@ -1,19 +1,19 @@
 package net.pitan76.endercane;
 
-import net.pitan76.mcpitanlib.api.event.item.*;
-import net.pitan76.mcpitanlib.api.gui.args.CreateMenuEvent;
-import net.pitan76.mcpitanlib.api.gui.v2.ExtendedScreenHandlerFactory;
-import net.pitan76.mcpitanlib.api.util.*;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import net.pitan76.mcpitanlib.api.event.item.*;
+import net.pitan76.mcpitanlib.api.gui.args.CreateMenuEvent;
+import net.pitan76.mcpitanlib.api.gui.v2.ExtendedScreenHandlerFactory;
+import net.pitan76.mcpitanlib.api.util.*;
 import net.pitan76.mcpitanlib.api.entity.Player;
 import net.pitan76.mcpitanlib.api.event.container.factory.DisplayNameArgs;
 import net.pitan76.mcpitanlib.api.event.container.factory.ExtraDataArgs;
 import net.pitan76.mcpitanlib.api.item.v2.CompatibleItemSettings;
 import net.pitan76.mcpitanlib.api.item.v2.CompatItem;
+import net.pitan76.mcpitanlib.midohra.item.ItemStack;
 
 public class EnderCane extends CompatItem {
     private final int maxPearlAmount;
@@ -26,11 +26,11 @@ public class EnderCane extends CompatItem {
     @Override
     public StackActionResult onRightClick(ItemUseEvent e) {
         Player player = e.getUser();
-        ItemStack stack = e.getStack();
+        ItemStack stack = e.getStackM();
 
         if (e.isClient()) return e.success();
 
-        if (e.isSneaking() || !(CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint"))) {
+        if (e.isSneaking() || !(stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "SelectPoint"))) {
             player.openExtendedMenu(new ExtendedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName(DisplayNameArgs args) {
@@ -44,15 +44,15 @@ public class EnderCane extends CompatItem {
 
                 @Override
                 public ScreenHandler createMenu(CreateMenuEvent e) {
-                    return new EnderCaneScreenHandler(e.getSyncId(), e.getPlayerInventory(), stack);
+                    return new EnderCaneScreenHandler(e.getSyncId(), e.getPlayerInventory(), stack.toMinecraft());
                 }
             });
 
             return e.success();
         }
 
-        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint")) {
-            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+        if (stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "SelectPoint")) {
+            NbtCompound nbt = stack.getCustomNbt();
             int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             if (pearlCount > 0 || getMaxPearlAmount() == -1) {
                 NbtCompound point = NbtUtil.get(nbt, "SelectPoint");
@@ -62,7 +62,7 @@ public class EnderCane extends CompatItem {
                     if (getMaxPearlAmount() != -1) {
                         pearlCount--;
                         NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
-                        CustomDataUtil.setNbt(stack, nbt);
+                        stack.setCustomNbt(nbt);
                     }
                 }
             }
@@ -76,11 +76,11 @@ public class EnderCane extends CompatItem {
     @Override
     public CompatActionResult onRightClickOnBlock(ItemUseOnBlockEvent e) {
         Player player = e.getPlayer();
-        ItemStack stack = e.getStack();
+        ItemStack stack = e.getStackM();
 
         if (e.isClient()) return e.success();
 
-        if (player.isSneaking() || !(CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint"))) {
+        if (e.isSneaking() || !(stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "SelectPoint"))) {
             player.openExtendedMenu(new ExtendedScreenHandlerFactory() {
                 @Override
                 public Text getDisplayName(DisplayNameArgs args) {
@@ -95,14 +95,14 @@ public class EnderCane extends CompatItem {
 
                 @Override
                 public ScreenHandler createMenu(CreateMenuEvent e) {
-                    return new EnderCaneScreenHandler(e.getSyncId(), e.getPlayerInventory(), stack);
+                    return new EnderCaneScreenHandler(e.getSyncId(), e.getPlayerInventory(), stack.toMinecraft());
                 }
             });
 
             return e.success();
         }
-        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "SelectPoint")) {
-            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+        if (stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "SelectPoint")) {
+            NbtCompound nbt = stack.getCustomNbt();
             int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             if (pearlCount > 0 || getMaxPearlAmount() == -1) {
                 NbtCompound point = NbtUtil.get(nbt, "SelectPoint");
@@ -112,7 +112,7 @@ public class EnderCane extends CompatItem {
                     if (getMaxPearlAmount() != -1) {
                         pearlCount--;
                         NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
-                        CustomDataUtil.setNbt(stack, nbt);
+                        stack.setCustomNbt(nbt);
                     }
                 }
             }
@@ -125,9 +125,9 @@ public class EnderCane extends CompatItem {
 
     @Override
     public int getItemBarStep(ItemBarStepArgs args) {
-        ItemStack stack = args.getStack();
-        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "ender_pearl")) {
-            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+        ItemStack stack = ItemStack.of(args.getStack());
+        if (stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "ender_pearl")) {
+            NbtCompound nbt = stack.getCustomNbt();
             int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             return Math.round((float) pearlCount * 13.0F / (float) this.getMaxPearlAmount());
         }
@@ -136,11 +136,11 @@ public class EnderCane extends CompatItem {
 
     @Override
     public int getItemBarColor(ItemBarColorArgs args) {
-        ItemStack stack = args.getStack();
+        ItemStack stack = ItemStack.of(args.getStack());
 
         int pearlCount = 0;
-        if (CustomDataUtil.hasNbt(stack) && CustomDataUtil.has(stack, "ender_pearl")) {
-            NbtCompound nbt = CustomDataUtil.getNbt(stack);
+        if (stack.hasCustomNbt() && CustomDataUtil.has(stack.toMinecraft(), "ender_pearl")) {
+            NbtCompound nbt = stack.getCustomNbt();
             pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
         }
         float f = 360 - 80 * Math.max(0.0F, (float)pearlCount / (float)this.getMaxPearlAmount());

@@ -1,8 +1,6 @@
 package net.pitan76.endercane.slot;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.pitan76.endercane.EnderCane;
 import net.pitan76.endercane.EnderCaneScreenHandler;
@@ -10,18 +8,20 @@ import net.pitan76.mcpitanlib.api.gui.slot.CompatibleSlot;
 import net.pitan76.mcpitanlib.api.util.CustomDataUtil;
 import net.pitan76.mcpitanlib.api.util.ItemStackUtil;
 import net.pitan76.mcpitanlib.api.util.NbtUtil;
+import net.pitan76.mcpitanlib.api.util.inventory.ICompatInventory;
+import net.pitan76.mcpitanlib.midohra.item.MCItems;
 
 public class EnderPearlInsertSlot extends CompatibleSlot {
     public EnderCaneScreenHandler screenHandler;
 
-    public EnderPearlInsertSlot(EnderCaneScreenHandler screenHandler, Inventory inventory, int index, int x, int y) {
+    public EnderPearlInsertSlot(EnderCaneScreenHandler screenHandler, ICompatInventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.screenHandler = screenHandler;
     }
 
     @Override
     public void callSetStack(ItemStack stack) {
-        if (stack.getItem() == Items.ENDER_PEARL) {
+        if (ItemStackUtil.getItemWrapper(stack).equals(MCItems.ENDER_PEARL)) {
             ItemStack handStack = screenHandler.handStack;
             int pearlCount = 0;
             NbtCompound nbt = NbtUtil.create();
@@ -33,7 +33,7 @@ public class EnderPearlInsertSlot extends CompatibleSlot {
             pearlCount += stack.getCount();
             NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
             if (pearlCount > 0) {
-                screenHandler.inventory.setStack(1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                screenHandler.inventory.callSetStack(1, MCItems.ENDER_PEARL.createStack(Math.min(16, pearlCount)));
             }
             CustomDataUtil.setNbt(handStack, nbt);
             super.callSetStack(ItemStackUtil.empty());

@@ -2,7 +2,6 @@ package net.pitan76.endercane;
 
 import net.minecraft.item.Item;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
 import net.pitan76.mcpitanlib.api.CommonModInitializer;
 import net.pitan76.mcpitanlib.api.entity.Player;
 import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandlerTypeBuilder;
@@ -12,6 +11,7 @@ import net.pitan76.mcpitanlib.api.registry.result.RegistryResult;
 import net.pitan76.mcpitanlib.api.registry.result.SupplierResult;
 import net.pitan76.mcpitanlib.api.util.CompatIdentifier;
 import net.pitan76.mcpitanlib.midohra.item.ItemGroups;
+import net.pitan76.mcpitanlib.midohra.util.math.BlockPos;
 
 public class EnderCaneMod extends CommonModInitializer {
     public static final String MOD_ID = "endercane";
@@ -37,7 +37,7 @@ public class EnderCaneMod extends CommonModInitializer {
         ENDER_CANE_TYPE = registry.registerScreenHandlerType(_id("ender_cane_gui"), new ExtendedScreenHandlerTypeBuilder<>(EnderCaneScreenHandler::new));
 
         ServerNetworking.registerReceiver(_id("add_point"), (e -> {
-            BlockPos pos = e.buf.readBlockPos();
+            BlockPos pos = BlockPos.of(e.buf.readBlockPos());
             Player player = e.player;
             if (player.getCurrentScreenHandler() instanceof EnderCaneScreenHandler) {
                 EnderCaneScreenHandler screenHandler = (EnderCaneScreenHandler) player.getCurrentScreenHandler();

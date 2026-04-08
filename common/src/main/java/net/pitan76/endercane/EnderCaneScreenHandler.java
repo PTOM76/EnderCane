@@ -1,16 +1,13 @@
 package net.pitan76.endercane;
 
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.pitan76.endercane.slot.EnderPearlExtractSlot;
 import net.pitan76.endercane.slot.EnderPearlInsertSlot;
 import net.pitan76.mcpitanlib.api.entity.Player;
@@ -18,10 +15,13 @@ import net.pitan76.mcpitanlib.api.gui.ExtendedScreenHandler;
 import net.pitan76.mcpitanlib.api.gui.slot.CompatibleSlot;
 import net.pitan76.mcpitanlib.api.network.PacketByteUtil;
 import net.pitan76.mcpitanlib.api.util.*;
+import net.pitan76.mcpitanlib.api.util.inventory.CompatInventory;
+import net.pitan76.mcpitanlib.midohra.item.MCItems;
+import net.pitan76.mcpitanlib.midohra.util.math.BlockPos;
 
 public class EnderCaneScreenHandler extends ExtendedScreenHandler {
 
-    public final Inventory inventory = new EnderCaneInventory(this);
+    public final CompatInventory inventory = new EnderCaneInventory(this);
 
     public ItemStack handStack;
     public BlockPos pos;
@@ -30,7 +30,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         this(syncId, playerInventory, ItemStackUtil.empty());
         String handStr = PacketByteUtil.readString(buf);
         if (buf.isReadable())
-            pos = PacketByteUtil.readBlockPos(buf);
+            pos = BlockPos.of(PacketByteUtil.readBlockPos(buf));
         
         Player player = new Player(playerInventory.player);
         handStack = player.getStackInHand(Hand.valueOf(handStr));
@@ -41,7 +41,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
         Player player = new Player(playerInventory.player);
         
         handStack = stack;
-        pos = player.getBlockPos();
+        pos = player.getBlockPosM();
 
         addPlayerHotbarSlots(playerInventory, 8, 142);
         addPlayerMainInventorySlots(playerInventory, 8, 84);
@@ -57,7 +57,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
             NbtCompound nbt = CustomDataUtil.getNbt(handStack);
             int pearlCount = NbtUtil.getInt(nbt, "ender_pearl");
             if (pearlCount > 0)
-                SlotUtil.setStack(extractSlot, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                SlotUtil.setStack(extractSlot, MCItems.ENDER_PEARL.createStack(Math.min(16, pearlCount)).toMinecraft());
         }
     }
 
@@ -70,7 +70,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
             ItemStack stack = SlotUtil.getStack(slot);
             originStack = ItemStackUtil.copy(stack);
 
-            if (index == 37 && ItemStackUtil.getItem(originStack) == Items.ENDER_PEARL) {
+            if (index == 37 && ItemStackUtil.getItemWrapper(originStack).equals(MCItems.ENDER_PEARL)) {
                 int pearlCount = 0;
                 NbtCompound nbt = NbtUtil.create();
                 if (CustomDataUtil.hasNbt(handStack)) {
@@ -81,7 +81,7 @@ public class EnderCaneScreenHandler extends ExtendedScreenHandler {
                 pearlCount -= ItemStackUtil.getCount(originStack);
                 NbtUtil.putInt(nbt, "ender_pearl", pearlCount);
                 if (pearlCount > 0) {
-                    InventoryUtil.setStack(inventory, 1, ItemStackUtil.create(Items.ENDER_PEARL, Math.min(16, pearlCount)));
+                    inventory.callSetStack(1, MCItems.ENDER_PEARL.createStack(Math.min(16, pearlCount)).toMinecraft());
                 }
                 CustomDataUtil.setNbt(handStack, nbt);
             }

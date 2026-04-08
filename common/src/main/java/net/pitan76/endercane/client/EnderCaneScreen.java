@@ -56,23 +56,20 @@ public class EnderCaneScreen extends CompatInventoryScreen<EnderCaneScreenHandle
 
         ADD_BTN = addDrawableChild_compatibility(ScreenUtil.createButtonWidget(x + 152, y + 10, 20, 20, TextUtil.translatable("button.endercane.add_point"), (widget) -> {
             // サーバーに送信
-            if (handler instanceof EnderCaneScreenHandler) {
-                EnderCaneScreenHandler screenHandler = this.handler;
-                PacketByteBuf buf = PacketByteUtil.create();
-                PacketByteUtil.writeBlockPos(buf, screenHandler.pos);
-                ClientNetworking.send(_id("add_point"), buf);
-                EnderCaneScreenHandler.addPoint(screenHandler, screenHandler.pos);
-            }
+            EnderCaneScreenHandler screenHandler = this.handler;
+            PacketByteBuf buf = PacketByteUtil.create();
+            PacketByteUtil.writeBlockPos(buf, screenHandler.pos.toMinecraft());
+            ClientNetworking.send(_id("add_point"), buf);
+            EnderCaneScreenHandler.addPoint(screenHandler, screenHandler.pos);
+
         }));
         SET_BTN = addDrawableChild_compatibility(ScreenUtil.createButtonWidget(x + 152, y + 30, 20, 20, TextUtil.translatable("button.endercane.set_point"), (widget) -> {
             // サーバーに送信
             PacketByteBuf buf = PacketByteUtil.create();
             PacketByteUtil.writeInt(buf, selectIndex);
             ClientNetworking.send(_id("set_point"), buf);
-            if (handler instanceof EnderCaneScreenHandler) {
-                EnderCaneScreenHandler screenHandler = this.handler;
-                EnderCaneScreenHandler.setPoint(screenHandler, selectIndex);
-            }
+            EnderCaneScreenHandler screenHandler = this.handler;
+            EnderCaneScreenHandler.setPoint(screenHandler, selectIndex);
         }));
         REMOVE_BTN = addDrawableChild_compatibility(ScreenUtil.createButtonWidget(x + 152, y + 50, 20, 20, TextUtil.translatable("button.endercane.remove_point"), (widget) -> {
             // サーバーに送信
